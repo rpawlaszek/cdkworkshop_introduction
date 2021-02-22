@@ -1,0 +1,5 @@
+@issuerUri = <uri>
+
+###
+
+GET {{issuerUri}}

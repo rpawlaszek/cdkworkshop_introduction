@@ -1,0 +1,63 @@
+@itemsUri = <api_uri>/items
+@cognitoUri = <domain_name>
+@clientId = <client_id>
+@clientSecret = <client_secret>
+
+
+###
+# @name authorize
+POST {{cognitoUri}}/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+&client_id={{clientId}}
+&client_secret={{clientSecret}}
+&scope=items/read items/write
+
+###
+
+@token = {{authorize.response.body.access_token}}
+
+###
+
+
+### POST ITEM
+
+POST {{itemsUri}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "itemName": "supername",
+    "itemDesc": "superdescription"
+}
+
+### GET ALL ITEMS
+
+# @name getall
+GET {{itemsUri}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+@itemId1 ={{getall.response.body.$[0].itemId}}
+
+### GET AN ITEM
+
+GET {{itemsUri}}/{{itemId1}}
+Authorization: Bearer {{token}}
+
+### UPDATE AN ITEM
+
+PATCH {{itemsUri}}/{{itemId1}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "itemName": "newSuperName"
+}
+
+### DELETE AN ITEM
+DELETE {{itemsUri}}/{{itemId1}}
+Authorization: Bearer {{token}}
