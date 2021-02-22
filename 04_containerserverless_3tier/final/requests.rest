@@ -1,0 +1,44 @@
+@todoUri = <uri>/api/TodoItems
+
+###
+
+# @name items
+GET {{todoUri}}
+Content-Type: application/json
+
+###
+
+@itemId = {{items.response.body.$[0].id}}
+
+###
+
+POST {{todoUri}}
+Content-Type: application/json
+
+{
+    "name": "superName",
+    "isComplete": false,
+    "secret": "superSecret"
+}
+
+###
+
+GET {{todoUri}}/{{itemId}}
+Content-Type: application/json
+
+###
+
+PUT {{todoUri}}/{{itemId}}
+Content-Type: application/json
+
+{
+    "id": {{itemId}},
+    "name": "superName2",
+    "isComplete": false,
+    "secret": "superSecret"
+}
+
+###
+
+DELETE {{todoUri}}/{{itemId}}
+Content-Type: application/json
